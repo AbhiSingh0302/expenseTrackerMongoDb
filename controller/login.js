@@ -20,21 +20,21 @@ exports.userLogin = async (req, res, next) => {
         console.log(req.body);
         const loginEmail = req.body.email;
         const loginPass = req.body.password;
-        const user = await User.findOne({
-            where: {
+        const user = await User.findOne(
+            {
                 email: loginEmail
             }
-        })
-        if(!user){
+        )
+        if (!user) {
             throw new Error('user not found')
-        }else{
+        } else {
             const bcryptToken = await bcrypt.compare(loginPass, user.password)
-            if(bcryptToken){
+            if (bcryptToken) {
                 res.status(200).json({
                     "message": "User successfully logged in",
                     "token": generateWebTokens(user.id)
                 })
-            }else{
+            } else {
                 throw new Error('user not found');
             }
         }

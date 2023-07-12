@@ -14,14 +14,15 @@ exports.userSignup = async (req, res, next) => {
 
         const encryptPass = await bcrypt.hash(password, 10);
         if(encryptPass){
-            const createUser = await User.create({
+            const createUser = new User({
                 username: name,
                 email: email,
                 password: encryptPass,
                 isPremium: false
             })
-            if(createUser){
-                res.status(201).json(createUser);
+            const userCreated = await createUser.save();
+            if(userCreated){
+                res.status(201).json(userCreated);
             }
             else{
                 throw new Error('Something not right');

@@ -5,7 +5,7 @@ const fs = require('fs');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -15,15 +15,15 @@ const expenseUserRouter = require('./routes/userexpense');
 const premiumRouter = require('./routes/premium');
 const forgotPasswordRouter = require('./routes/forgotPassword');
 
-const User = require('./models/user');
+// const User = require('./models/user');
 
-const Expense = require('./models/expense');
+// const Expense = require('./models/expense');
 
-const Order = require('./models/order');
+// const Order = require('./models/order');
 
-const Forgotpasswordrequests = require('./models/forgetpasswordrequests');
+// const Forgotpasswordrequests = require('./models/forgetpasswordrequests');
 
-const sequelize = require('./utils/database');
+// const sequelize = require('./utils/database');
 
 const app = express();
 
@@ -54,14 +54,14 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'),
 
 app.use(morgan("combined",{stream: accessLogStream}));
 
-Forgotpasswordrequests.belongsTo(User);
-User.hasMany(Forgotpasswordrequests);
+// Forgotpasswordrequests.belongsTo(User);
+// User.hasMany(Forgotpasswordrequests);
 
-Expense.belongsTo(User);
-User.hasMany(Expense);
+// Expense.belongsTo(User);
+// User.hasMany(Expense);
 
-User.hasMany(Order);
-Order.belongsTo(User);
+// User.hasMany(Order);
+// Order.belongsTo(User);
 
 app.use(forgotPasswordRouter);
 
@@ -73,10 +73,19 @@ app.use(loginRouter);
 
 app.use(signUpRouter);
 
-sequelize.sync()
-.then(() =>{
-    app.listen(3500);
+mongoose.connect(process.env.MONGODB_URL)
+.then(() => {
+  app.listen(3500);
 })
 .catch((err) => {
-    console.log(err);
+  console.log(err);
 })
+
+
+// sequelize.sync()
+// .then(() =>{
+//     app.listen(3500);
+// })
+// .catch((err) => {
+//     console.log(err);
+// })
