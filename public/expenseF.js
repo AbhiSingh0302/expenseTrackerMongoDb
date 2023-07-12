@@ -75,6 +75,7 @@ lastPage.onclick = () => {
 
 
 function showPagination(expenses){
+    ul.innerHTML = "";
     for(expense of expenses){
         let li = document.createElement('li');
             li.innerHTML = `${expense.amount} Rs of 
@@ -98,16 +99,16 @@ async function pagination(page){
             'token': localStorage.getItem('token')
         }
     });
-    console.log(getPagination.data.totalItems / rowsVal);
-    if(getPagination.data.perPage){
-        showPagination(getPagination.data.perPage);
-        totalItems = getPagination.data.totalItems;
-        if(totalItems/rowsVal == Math.floor(totalItems/rowsVal)){
-            lastPageNum = totalItems/rowsVal;
-        }else{
-            lastPageNum = Math.floor(totalItems/rowsVal) + 1;
-        }
-        console.log(totalItems,lastPageNum);
+    console.log(getPagination.data);
+    if(getPagination.data.expensePagination){
+        showPagination(getPagination.data.expensePagination);
+        // totalItems = getPagination.data.totalItems;
+        // if(totalItems/rowsVal == Math.floor(totalItems/rowsVal)){
+        //     lastPageNum = totalItems/rowsVal;
+        // }else{
+        //     lastPageNum = Math.floor(totalItems/rowsVal) + 1;
+        // }
+        lastPageNum = getPagination.data.totalPages
     }else{
         alert('Something is not right');
     }
@@ -122,8 +123,8 @@ function onLoadGet(){
         }
     })
         .then(result => {
-            // console.log(result);
-            getExpense(result.data.result);
+            console.log("result is: ",result);
+            getExpense(result.data.expenses);
             if(!result.data.isPremium){
                 razorpay.style.display = 'inline';
             }else{
@@ -132,11 +133,12 @@ function onLoadGet(){
             }
         })
         .catch(err => {
-            // console.log(err);
+            console.log(err);
         })
 };
 function getExpense(expenses) {
     // console.log(expenses);
+    ul.innerHTML = "";
     for (expense of expenses) {
         if(expense.category == 'food'){
             food += +expense.amount
@@ -153,15 +155,15 @@ function getExpense(expenses) {
         else{
             others += +expense.amount
         }
-        // let li = document.createElement('li');
-        // li.innerHTML = `${expense.amount} Rs of 
-        // ${expense.description} in the category of 
-        // ${expense.category} <button id=${expense.id}>Delete</button>`;
-        // li.id = `li-${expense.id}`;
-        // ul.appendChild(li);
-        // document.getElementById(expense.id).onclick = (e) => {
-        //     removeExpense(e.target.id);
-        // };
+        let li = document.createElement('li');
+        li.innerHTML = `${expense.amount} Rs of 
+        ${expense.description} in the category of 
+        ${expense.category} <button id=${expense.id}>Delete</button>`;
+        li.id = `li-${expense.id}`;
+        ul.appendChild(li);
+        document.getElementById(expense.id).onclick = (e) => {
+            removeExpense(e.target.id);
+        };
     }
     pieChart(food,shopping,travelling,bills,others);
 
@@ -200,13 +202,13 @@ form.addEventListener('submit', async (e) => {
         }
     })
             console.log('created: ',createdExpense);
-            // amount.value = "";
-            // des.value = "";
-            // licategory.forEach(e => {
-            //     $(document).ready(() => {
-            //         $(e).fadeIn("slow");
-            // })
-        // })
+            amount.value = "";
+            des.value = "";
+            licategory.forEach(e => {
+                $(document).ready(() => {
+                    $(e).fadeIn("slow");
+            })
+        })
         location.reload();
             // if(ul.children){
             //     for(let child of ul.children){
