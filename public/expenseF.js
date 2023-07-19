@@ -80,10 +80,10 @@ function showPagination(expenses){
         let li = document.createElement('li');
             li.innerHTML = `${expense.amount} Rs of 
             ${expense.description} in the category of 
-            ${expense.category} <button id=${expense.id}>Delete</button>`;
-            li.id = `li-${expense.id}`;
+            ${expense.category} <button id=${expense._id}>Delete</button>`;
+            li.id = `li-${expense._id}`;
             ul.appendChild(li);
-            document.getElementById(expense.id).onclick = (e) => {
+            document.getElementById(expense._id).onclick = (e) => {
                 removeExpense(e.target.id);
             };
     }
@@ -158,10 +158,10 @@ function getExpense(expenses) {
         let li = document.createElement('li');
         li.innerHTML = `${expense.amount} Rs of 
         ${expense.description} in the category of 
-        ${expense.category} <button id=${expense.id}>Delete</button>`;
-        li.id = `li-${expense.id}`;
+        ${expense.category} <button id=${expense._id}>Delete</button>`;
+        li.id = `li-${expense._id}`;
         ul.appendChild(li);
-        document.getElementById(expense.id).onclick = (e) => {
+        document.getElementById(expense._id).onclick = (e) => {
             removeExpense(e.target.id);
         };
     }
@@ -169,7 +169,7 @@ function getExpense(expenses) {
 
 }
 function removeExpense(id) {
-    axios.post(`http://localhost:3500/expense/user/${id}`,{
+    axios.get(`http://localhost:3500/expense/user/${id}`,{
         headers: {
             'token': localStorage.getItem('token')
         }

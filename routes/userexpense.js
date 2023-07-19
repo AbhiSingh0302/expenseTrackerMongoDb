@@ -8,7 +8,7 @@ const expenseController = require('../controller/expense');
 
 const router = express.Router();
 
-// router.post('/expense/user/:id',expenseController.expenseDelete);
+router.get('/expense/user/:id',expenseMiddleware.authorization,expenseController.expenseDelete);
 
 router.get('/expense/all',expenseMiddleware.authorization,expenseController.expenseAll);
 

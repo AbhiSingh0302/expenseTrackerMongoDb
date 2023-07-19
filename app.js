@@ -15,19 +15,8 @@ const expenseUserRouter = require('./routes/userexpense');
 const premiumRouter = require('./routes/premium');
 const forgotPasswordRouter = require('./routes/forgotPassword');
 
-// const User = require('./models/user');
-
-// const Expense = require('./models/expense');
-
-// const Order = require('./models/order');
-
-// const Forgotpasswordrequests = require('./models/forgetpasswordrequests');
-
-// const sequelize = require('./utils/database');
-
 const app = express();
 
-// app.use(helmet());
 app.use(
     helmet.contentSecurityPolicy({
       useDefaults: true,
